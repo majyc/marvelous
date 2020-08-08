@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Marvel Super Heroes FASERIP Universal Chart</title>
+<style type="text/css">
+body {
+	background: aquamarine;
+}
+
+table {
+	background: white;
+	border-collapse: collapse;
+}
+
+table,th,td {
+	border: 1px solid black;
+	padding: 3px 7px 2px 7px;
+}
+
+th {
+	width : 50px;
+}
+
+td.white {
+	background-color: white;
+	font-weight: bold;
+}
+
+td.green {
+	background-color: green;
+	font-weight: bold;
+}
+
+td.yellow {
+	background-color: yellow;
+	font-weight: bold;
+}
+
+td.red {
+	background-color: red;
+	font-weight: bold;
+}
+
+td.rightDivider,th.rightDivider {
+	border-right: 5px solid black;
+}
+
+td.hover {
+	border : 1px solid aquamarine;
+}
+
+.smaller {
+	font-style: italic;
+	font-size: smaller;
+}
+</style>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css">
+</head>
+<body>
+	<h1>Marvel FASERIP Universal Power Chart</h1>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	var ranks = Array([1, 1],
+			[2, 3],
+			[4, 6],
+			[7, 10],				
+			[11, 15],
+			[16, 20],
+			[21, 25],
+			[26, 30],
+			[31, 35],
+			[36, 40],
+			[41, 45],
+			[46, 50],
+			[51, 55],
+			[56, 60],
+			[61, 65],
+			[66, 70],
+			[71, 75],
+			[76, 80],
+			[81, 85],
+			[86, 90],
+			[91, 94],
+			[95, 97],
+			[98, 99],
+			[100, 100]
+			);
+		var typeTips = { "BA" : ["No damage", "Strength rank number in damage", "Strength rank number in damage, and may Slam opponent", "Strength rank number in damage, and may Stun opponent"],
+				"EA" : ["No Damage", 
+				        "Damage as set for that particular edged attack", 
+				        "Damage as set for that particular edged attack, and may Stun opponent", 
+				        "Check on the Kill result table"],
+				"Sh" : ["Misses the intended target. The missile continues to fly, and the Judge may make a second roll to see if the attack hits another target in the same general area and path of the weapon", 
+				        "Damage according to the weapon. Some specialized weapons inflict no damage, but instead call for an Endurance FEAT",
+						"Damage as for a normal Hit result. A Bullseye is used if the character is shooting for a particular part of the target", 
+						"Check on the Kill result table"],
+				"TE" : ["Misses the intended target. The missile continues to fly, and the Judge may make a second roll to see if the attack hits another target in the same general area and path of the weapon", 
+				        "Damage according to the weapon", 
+				        "Damage, and in addition have a possibility of Stunning the opponent for 1-10 rounds", 
+				        "Check on the Kill result table"],
+				"TB" : ["Misses the intended target. The missile continues to fly, and the Judge may make a second roll to see if the attack hits another target in the same general area and path of the weapon", 
+				        "Damage according to Strength rank number or material strength of the object, whichever is less", 
+				        "Damage according to Strength rank number or material strength of the object, whichever is less. A Bullseye is used if the character is shooting for a particular part of the target", 
+				        "Damage according to Strength rank number or material strength of the object, whichever is less, and may Stun opponent. May be reduced if the attacker wishes."],
+				"En" : ["Misses the intended target. The missile continues to fly, and the Judge may make a second roll to see if the attack hits another target in the same general area and path of the weapon", 
+				        "Damage as normal. Energy attacks have a max damage. May be reduced in number but not effect (from red to yellow, for example)", 
+				        "Damage as for a normal Hit result. A Bullseye is used if the character is shooting for a particular part of the target. Energy attacks have a max damage. May be reduced in number but not effect (from red to yellow, for example)", 
+				        "Check on the Kill result table. Energy attacks have a max damage. May be reduced in number but not effect (from red to yellow, for example)"],
+				"Fo" : ["Misses the intended target. The missile continues to fly, and the Judge may make a second roll to see if the attack hits another target in the same general area and path of the weapon", 
+				        "Damage as normal. May be reduced in number but not effect (from red to yellow, for example)", 
+				        "Damage as normal. A Bullseye is used if the character is shooting for a particular part of the target. Energy attacks have a max damage. May be reduced in number but not effect (from red to yellow, for example)", 
+				        "Damage as normal, and may Stun opponent. May be reduced in number but not effect (from red to yellow, for example)"],
+				"Gp" : ["Failed to hold onto the opponent. Attacker may not make other attacks this round",
+				        "Failed to hold onto the opponent. Attacker may not make other attacks this round",
+				        "Attacker has grabbed onto an arm, leg, or other part in such a way that will limit actions but not reduce them in full. The attacker may choose exactly what she has grabbed onto. The target may perform any normal actions, but at a -2 CS penalty, and may not move if the attacker's Strength is equal to or greater than the target's. No damage is inflicted in a Partial Hold.", 
+				        "Attacker has placed the target in a position where the target is fully restrained from action, and may damage the target. The target is considered held until the attacker releases the target or the target escapes. The attacker may perform one action in addition to maintaining the hold, and may inflict up to the Strength level of damage to the target (subject to Body Armor)"],
+				"Gb" : ["The item in question is not in your character's possession. If the item was in another character's possession, it still is. If the item was in no one's possession, the item is knocked loose and will be up to one area away in any direction.", 
+				        "Attacker has full possession of the item if his Strength is equal to or greater than the target's (use material strength for things that are glued or clamped down). If not, consider as a miss", 
+				        "Attacker has taken possession of the item, whether or not the Strength of the opponent was higher", 
+				        "Attacker has succeeded, and may either depart with the item immediately or, potentially, set off the item. A second roll is made against the material strength of the item involved. If a color (red, green or yellow) result is made, then the attacker may either use the item or move up to half his or her speed away (round up). If a white result is made, the item is damaged, broken, or goes off. This will vary from item to item -- a glass vase drops to the floor, a gun fires in a random direction, a bomb explodes or loses its safety device, etc."],
+				"Es" : ["Character attempting to Escape may make no other action that turn, and is considered held",
+				        "Character attempting to Escape may make no other action that turn, and is considered held",
+				        "Character attempting to Escape is free of the hold. The character may move at half speed, but may not perform any other actions", 
+				        "Character scoring a Reverse is free of the hold and in a position to do one of the following: Move up to half distance. attempt to Grapple the former attacker, or perform any other action at a -2 CS"],
+				"Ch" : ["No Damage. In addition, the character continues his move for half the character's speed (round up) after the attack. Any change in direction would require an additional Agility FEAT. If the straight line passes into some material obstacle, the character makes an attack on that obstacle instead. The attacked character may return the attack only if his action was originally following the charge", 
+				        "Inflicts up to maximum current Endurance or Body Armor rank in damage, whichever is higher, plus two additional points of damage for every area covered in the attack.  If the defender's Body Armor is greater than the damage inflicted by the attacker, the damage is rebounded onto the attacker. If the attacker's Body Armor is greater than the rebounded damage, neither side takes damage.", 
+				        "Inflicts up to maximum current Endurance or Body Armor rank in damage, whichever is higher, plus two additional points of damage for every area covered in the attack, and in addition may Slam opponent.  If the defender's Body Armor is greater than the damage inflicted by the attacker, the damage is rebounded onto the attacker. If the attacker's Body Armor is greater than the rebounded damage, neither side takes damage. Stuns still applies)", 
+				        "Inflicts up to maximum current Endurance or Body Armor rank in damage, whichever is higher, plus two additional points of damage for every area covered in the attack, and in addition may Stun opponent.  If the defender's Body Armor is greater than the damage inflicted by the attacker, the damage is rebounded onto the attacker. If the attacker's Body Armor is greater than the rebounded damage, neither side takes damage. Slam still applyies"],
+				"Do" : ["No change", 
+				        "-2 CS to the attack",
+				        "-4 CS to the attack", 
+				        "-6 CS to the attack"],
+				"Ev" : ["The character zigged where he should have zagged, placing him in the direct line of fire of the opponent. The result of the opponent's attack will be at least a green result, even if a white result was rolled", 
+						"Character dodged the blow from that particular attacker. The attacker does no damage.",
+						"Character dodged the blow from that particular attacker. The attacker does no damage and the character gets +1CS to hit (but not damage) against the attacker on his first attack next round", 
+						"Character dodged the blow from that particular attacker. The attacker does no damage and the character gets +2CS to hit (but not damage) against the attacker on his first attack next round"],
+				"Bl" : ["Apply Strength -6 CS as Body Armor. May take no other actions", 
+				        "Apply Strength -4 CS as Body Armor. May take no other actions", 
+				        "Apply Strength -2 CS as Body Armor. May take no other actions", 
+				        "Apply Strength +1 CS as Body Armor. May take no other actions"],
+				"Ca" : ["Object the hero tried to catch hit the hero instead. In the case of a falling object, this is as if the object made a charging attack against the character at the speed of the fall. In the cases of shooting or thrown weapons, the hero is automatically hit (a white result to hit is treated as a green result). (-3CS to the catch if object was aimed at hero)", 
+				        "Missed catching the object. If the object he was trying to catch was directed against him as an attack, the attack proceeds at a +1CS to hit.  (-3CS to the catch if object was aimed at hero)",
+				        "Caught the object, but might damage it as a result. Treat the catch as a damage-inflicting attack on the object or character being caught.(-3CS to the catch if object was aimed at hero)", 
+				        "Object is caught with no ill effects to the hero attempting the catch or the object or character being caught. (-3CS to the catch if object was aimed at hero)"],
+				"St" : ["Character is knocked out for 1-10 rounds (roll a die). During this time a character may take no actions. ", 
+				        "Character is knocked down and may take no action next round. The character is still conscious, but as the apparent result is the same as 1-10 rounds, a character can play possum and keep his ears open. ", 
+				        "No	Effect",
+				        "No	Effect"],
+				"Sl" : ["Target is knocked away with a speed equal to the Strength of the attacker taken as ground speed. If the attacker inflicted any damage on the target, the attacker chooses the direction of the Slam. If no damage was inflicted, the defender chooses the direction", 
+				        "Target is knocked one area away (ranged or area movement). If the attacker inflicted any damage on the target, the attacker chooses the direction of the Slam. If no damage was inflicted, the defender chooses the direction", 
+				        "Target takes the damage of a hit and is no longer considered adjacent to his attacker. Target is knocked back a step or two, perhaps knocked to one knee, but is fully capable of engaging in combat next round. There is no further damage unless the situation demands it.", 
+				        "No Slam. Target still takes damage as for a normal hit"],
+				"Ki" : ["Character's Endurance is reduced by one rank. The character is dying (check under Life, Death, and Health), and will continue to lose Endurance at one rank per turn until the situation is cleared", 
+				        "Character is affected as an Endurance Loss only if the method of attack was Edged attack in Slugfest or a Shooting attack. Any other attack form is considered No Effect (damage as normal, but character is not slain)",
+				        "No Effect: The character takes damage as listed for the attack form, but is not slain.",
+				        "No Effect: The character takes damage as listed for the attack form, but is not slain."],
+		};
+		var target = "";
+		$( document ).tooltip();
+		$(document).ready(function() {
+			$("table#UniversalTypes td").each(function(index) {
+				var id = $(this).attr("id");
+				var tip = "";
+				if (id) {
+					var colon = id.indexOf(':');
+					if (colon > -1) {
+						type = id.substring(0, colon);
+						tips = typeTips[type];
+						if ($(this).hasClass("red")) {
+							tip = tips[3];
+						} else if ($(this).hasClass("yellow")) {
+							tip = tips[2];
+						} else if ($(this).hasClass("green")) {
+							tip = tips[1];
+						} else if ($(this).hasClass("white")) {
+							tip = tips[0];							
+						} else {
+							tip = "";
+						}
+					}	
+				}
+				$(this).attr("title", tip);
+			});
+			$("table#UniversalTypes td").hover(
+					  function () {
+					    $(this).addClass("hover");
+					  },
+					  function () {
+					    $(this).removeClass("hover");
+					  }
+			);
+			$("table#UniversalResults  th").each(function(index) {
+				$(this).click(function(event) {
+					if (target.length > 0) {
+						$(target).text("");
+						$(target).css("border", "solid black 1px");
+						if (target.charAt(1) === "Z") {
+							$(target).css("border-right", "5px solid black");
+						}
+					}
+					var roll = Math.floor(Math.random() * 100) + 1;
+					var text = "huh";
+					for(var i = 0, len = ranks.length; i < len; i++) {
+						var low = ranks[i][0];
+						var hi = ranks[i][1];
+						if (roll >= low && roll <= hi) {
+							text = low + "-" + hi;
+							break;
+						}
+					}
+					target ="#"+this.id+"\\:"+text;
+					$(target).text(roll);
+					$(target).effect("highlight", {color: "aquamarine"}).effect("bounce", {times:3},  { duration:400}).dequeue();
+					if (!$(target).hasClass("red")) {				
+						$(target).css("border", "solid red 2px");						
+					} else {
+						$(target).css("border", "solid blue 2px");												
+					}
+					if (target.charAt(1) == "Z") {
+						$(target).css("border-right", "5px solid black");
+					}
+				});
+			});	
+		});
+	</script>
+	<table id="UniversalTypes" class="Univeral" title="Hover over a result to see the rule">
+		<tr>
+			<th>&nbsp;</th>
+			<th id="BA"><span class="smaller">Blunt Attacks</span><br />BA<br />
+			<span class="smaller">Fighting</span></th>
+			<th id="EA"><span class="smaller">Edged Attacks</span><br />EA<br />
+			<span class="smaller">Fighting</span></th>
+			<th id="Sh"><span class="smaller">Shooting</span><br />Sh<br />
+			<span class="smaller">Agility</span></th>
+			<th id="TE"><span class="smaller">Throwing Edged</span><br />TE<br />
+			<span class="smaller">Agility</span></th>
+			<th id="TB"><span class="smaller">Throwing Blunt</span><br />TB<br />
+			<span class="smaller">Agility</span></th>
+			<th id="En"><span class="smaller">Energy</span><br />En<br />
+			<span class="smaller">Agility</span></th>
+			<th id="Fo"><span class="smaller">Force</span><br />Fo<br />
+			<span class="smaller">Agility</span></th>
+			<th id="Gp"><span class="smaller">Grappling</span><br />Gp<br />
+			<span class="smaller">Strength</span></th>
+			<th id="Gb"><span class="smaller">Grabbing</span><br />Gb<br />
+			<span class="smaller">Strength</span></th>
+			<th id="Es"><span class="smaller">Escaping</span><br />Es<br />
+			<span class="smaller">Strength</span></th>
+			<th id="Ch"><span class="smaller">Charging</span><br />Ch<br />
+			<span class="smaller">Endurance</span></th>
+			<th id="Do"><span class="smaller">Dodge</span><br />Do<br />
+			<span class="smaller">Agility</span></th>
+			<th id="Ev"><span class="smaller">Evading</span><br />Ev<br />
+			<span class="smaller">Fighting</span></th>
+			<th id="Bl"><span class="smaller">Blocking</span><br />Bl<br />
+			<span class="smaller">Strength</span></th>
+			<th id="Ca"><span class="smaller">Catching</span><br />Ca<br />
+			<span class="smaller">Agility</span></th>
+			<th id="St"><span class="smaller">Stun?</span><br />St<br />
+			<span class="smaller">Endurance</span></th>
+			<th id="Sl"><span class="smaller">Slam?</span><br />Sl<br />
+			<span class="smaller">Endurance</span></th>
+			<th id="Ki"><span class="smaller">Kill?</span><br />Ki<br />
+			<span class="smaller">Endurance</span></th>
+		</tr>
+		<tr>
+			<td class="white" title="Failed to initialize tooltips">White</td>
+			<td id="BA:White" class="white">Miss</td>
+			<td id="EA:White" class="white">Miss</td>
+			<td id="Sh:White" class="white">Miss</td>
+			<td id="TE:White" class="white">Miss</td>
+			<td id="TB:White" class="white">Miss</td>
+			<td id="En:White" class="white">Miss</td>
+			<td id="Fo:White" class="white">Miss</td>
+			<td id="Gp:White" class="white">Miss</td>
+			<td id="Gb:White" class="white">Miss</td>
+			<td id="Es:White" class="white">Miss</td>
+			<td id="Ch:White" class="white">Miss</td>
+			<td id="Do:White" class="white">None</td>
+			<td id="Ev:White" class="white">Autohit</td>
+			<td id="Bl:White" class="white">-6 CS</td>
+			<td id="Ca:White" class="white">Autohit</td>
+			<td id="St:White" class="white">1-10</td>
+			<td id="Sl:White" class="white">Grand Slam</td>
+			<td id="Ki:White" class="white">En. Loss</td>
+		</tr>
+		<tr>
+			<td class="green">Green</td>
+			<td id="BA:Green" class="green">Hit</td>
+			<td id="EA:Green" class="green">Hit</td>
+			<td id="Sh:Green" class="green">Hit</td>
+			<td id="TE:Green" class="green">Hit</td>
+			<td id="TB:Green" class="green">Hit</td>
+			<td id="En:Green" class="green">Hit</td>
+			<td id="Fo:Green" class="green">Hit</td>
+			<td id="Gp:Green" class="green">Miss</td>
+			<td id="Gb:Green" class="green">Take</td>
+			<td id="Es:Green" class="green">Miss</td>
+			<td id="Ch:Green" class="green">Hit</td>
+			<td id="Do:Green" class="green">-2CS</td>
+			<td id="Ev:Green" class="green">Evasion</td>
+			<td id="Bl:Green" class="green">-4CS</td>
+			<td id="Ca:Green" class="green">Miss</td>
+			<td id="St:Green" class="green">1</td>
+			<td id="Sl:Green" class="green">1 Area</td>
+			<td id="Ki:Green" class="green">E/S</td>
+		</tr>
+		<tr>
+			<td class="yellow">Yellow</td>
+			<td id="BA:Yellow" class="yellow">Slam</td>
+			<td id="EA:Yellow" class="yellow">Stun</td>
+			<td id="Sh:Yellow" class="yellow">Bullseye</td>
+			<td id="TE:Yellow" class="yellow">Stun</td>
+			<td id="TB:Yellow" class="yellow">Hit</td>
+			<td id="En:Yellow" class="yellow">Bullseye</td>
+			<td id="Fo:Yellow" class="yellow">Bullseye</td>
+			<td id="Gp:Yellow" class="yellow">Partial</td>
+			<td id="Gb:Yellow" class="yellow">Grab</td>
+			<td id="Es:Yellow" class="yellow">Escape</td>
+			<td id="Ch:Yellow" class="yellow">Slam</td>
+			<td id="Do:Yellow" class="yellow">-4CS</td>
+			<td id="Ev:Yellow" class="yellow">+1CS</td>
+			<td id="Bl:Yellow" class="yellow">-2CS</td>
+			<td id="Ca:Yellow" class="yellow">Damage</td>
+			<td id="St:Yellow" class="yellow">No</td>
+			<td id="Sl:Yellow" class="yellow">Stagger</td>
+			<td id="Ki:Yellow" class="yellow">No</td>
+		</tr>
+		<tr>
+			<td class="red">Red</td>
+			<td id="BA:Red" class="red">Stun</td>
+			<td id="EA:Red" class="red">Kill</td>
+			<td id="Sh:Red" class="red">Kill</td>
+			<td id="TE:Red" class="red">Kill</td>
+			<td id="TB:Red" class="red">Stun</td>
+			<td id="En:Red" class="red">Kill</td>
+			<td id="Fo:Red" class="red">Stun</td>
+			<td id="Gp:Red" class="red">Hold</td>
+			<td id="Gb:Red" class="red">Break</td>
+			<td id="Es:Red" class="red">Reverse</td>
+			<td id="Ch:Red" class="red">Stun</td>
+			<td id="Do:Red" class="red">-6CS</td>
+			<td id="Ev:Red" class="red">+2CS</td>
+			<td id="Bl:Red" class="red">+1CS</td>
+			<td id="Ca:Red" class="red">Catch</td>
+			<td id="St:Red" class="red">No</td>
+			<td id="Sl:Red" class="red">No</td>
+			<td id="Ki:Red" class="red">No</td>
+		</tr>
+	</table>
+<br/>
+Click on a column to roll at that power level:
+<br/>
+<table id="UniversalResults" class="Universal">
+<tr>
+<th>&nbsp;</th>
+	<th id="0">0<br/><span class="smaller">Shift 0</span></th>
+	<th id="Fe">Fe<br/><span class="smaller">Feeble</span></th>
+	<th id="Pr">Pr<br/><span class="smaller">Poor</span></th>
+	<th id="Ty">Ty<br/><span class="smaller">Typical</span></th>
+	<th id="Gd">Gd<br/><span class="smaller">Good</span></th>
+	<th id="Rm">Rm<br/><span class="smaller">Remarkable</span></th>
+	<th id="In">In<br/><span class="smaller">Incredible</span></th>
+	<th id="Am">Am<br/><span class="smaller">Amazing</span></th>
+	<th id="Mn">Mn<br/><span class="smaller">Monstrous</span></th>
+	<th id="Un">Un<br/><span class="smaller">Unearthly</span></th>
+	<th id="X">X<br/><span class="smaller">Shift X</span></th>
+	<th id="Y">Y<br/><span class="smaller">Shift Y</span></th>
+	<th id="Z" class="rightDivider">Z<br/><span class="smaller">Shift Z</span></th>
+	<th id="1000">1000<br/><span class="smaller">Class<br/>1000</span></th>
+	<th id="3000">3000<br/><span class="smaller">Class<br/>3000</span></th>
+	<th id="5000">5000<br/><span class="smaller">Class<br/>5000</span></th>
+	<th id="B">B<br/><span class="smaller">Beyond</span></th>
+</tr>
+<tr id="1-1">
+	<td id="Base:1-1">01</td>
+	<td id="0:1-1"  class="white">&nbsp;</td>
+	<td id="Fe:1-1"  class="white">&nbsp;</td>
+	<td id="Pr:1-1"  class="white">&nbsp;</td>
+	<td id="Ty:1-1"  class="white">&nbsp;</td>
+	<td id="Gd:1-1"  class="white">&nbsp;</td>
+	<td id="Rm:1-1"  class="white">&nbsp;</td>
+	<td id="In:1-1"  class="white">&nbsp;</td>
+	<td id="Am:1-1"  class="white">&nbsp;</td>
+	<td id="Mn:1-1"  class="white">&nbsp;</td>
+	<td id="Un:1-1"  class="white">&nbsp;</td>
+	<td id="X:1-1"  class="white">&nbsp;</td>
+	<td id="Y:1-1"  class="white">&nbsp;</td>
+	<td id="Z:1-1"  class="white rightDivider">&nbsp;</td>
+	<td id="1000:1-1"  class="white">&nbsp;</td>
+	<td id="3000:1-1"  class="white">&nbsp;</td>
+	<td id="5000:1-1"  class="white">&nbsp;</td>
+	<td id="B:1-1"  class="white">&nbsp;</td>
+</tr>
+<tr id="2-3">
+	<td id="Base:2-3">02-03</td>
+	<td id="0:2-3"  class="white">&nbsp;</td>
+	<td id="Fe:2-3"  class="white">&nbsp;</td>
+	<td id="Pr:2-3"  class="white">&nbsp;</td>
+	<td id="Ty:2-3"  class="white">&nbsp;</td>
+	<td id="Gd:2-3"  class="white">&nbsp;</td>
+	<td id="Rm:2-3"  class="white">&nbsp;</td>
+	<td id="In:2-3"  class="white">&nbsp;</td>
+	<td id="Am:2-3"  class="white">&nbsp;</td>
+	<td id="Mn:2-3"  class="white">&nbsp;</td>
+	<td id="Un:2-3"  class="white">&nbsp;</td>
+	<td id="X:2-3"  class="white">&nbsp;</td>
+	<td id="Y:2-3"  class="white">&nbsp;</td>
+	<td id="Z:2-3"  class="white rightDivider">&nbsp;</td>
+	<td id="1000:2-3"  class="green">&nbsp;</td>
+	<td id="3000:2-3"  class="green">&nbsp;</td>
+	<td id="5000:2-3"  class="green">&nbsp;</td>
+	<td id="B:2-3"  class="green">&nbsp;</td>
+</tr>
+<tr id="4-6">
+	<td id="Base:4-6">04-06</td>
+	<td id="0:4-6"  class="white">&nbsp;</td>
+	<td id="Fe:4-6"  class="white">&nbsp;</td>
+	<td id="Pr:4-6"  class="white">&nbsp;</td>
+	<td id="Ty:4-6"  class="white">&nbsp;</td>
+	<td id="Gd:4-6"  class="white">&nbsp;</td>
+	<td id="Rm:4-6"  class="white">&nbsp;</td>
+	<td id="In:4-6"  class="white">&nbsp;</td>
+	<td id="Am:4-6"  class="white">&nbsp;</td>
+	<td id="Mn:4-6"  class="white">&nbsp;</td>
+	<td id="Un:4-6"  class="white">&nbsp;</td>
+	<td id="X:4-6"  class="white">&nbsp;</td>
+	<td id="Y:4-6"  class="white">&nbsp;</td>
+	<td id="Z:4-6"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:4-6"  class="green">&nbsp;</td>
+	<td id="3000:4-6"  class="green">&nbsp;</td>
+	<td id="5000:4-6"  class="green">&nbsp;</td>
+	<td id="B:4-6"  class="green">&nbsp;</td>
+</tr>
+<tr id="7-10">
+	<td id="Base:7-10">07-10</td>
+	<td id="0:7-10"  class="white">&nbsp;</td>
+	<td id="Fe:7-10"  class="white">&nbsp;</td>
+	<td id="Pr:7-10"  class="white">&nbsp;</td>
+	<td id="Ty:7-10"  class="white">&nbsp;</td>
+	<td id="Gd:7-10"  class="white">&nbsp;</td>
+	<td id="Rm:7-10"  class="white">&nbsp;</td>
+	<td id="In:7-10"  class="white">&nbsp;</td>
+	<td id="Am:7-10"  class="white">&nbsp;</td>
+	<td id="Mn:7-10"  class="white">&nbsp;</td>
+	<td id="Un:7-10"  class="white">&nbsp;</td>
+	<td id="X:7-10"  class="white">&nbsp;</td>
+	<td id="Y:7-10"  class="green">&nbsp;</td>
+	<td id="Z:7-10"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:7-10"  class="green">&nbsp;</td>
+	<td id="3000:7-10"  class="green">&nbsp;</td>
+	<td id="5000:7-10"  class="green">&nbsp;</td>
+	<td id="B:7-10"  class="green">&nbsp;</td>
+</tr>
+<tr id="11-15">
+	<td id="Base:11-15">11-15</td>
+	<td id="0:11-15"  class="white">&nbsp;</td>
+	<td id="Fe:11-15"  class="white">&nbsp;</td>
+	<td id="Pr:11-15"  class="white">&nbsp;</td>
+	<td id="Ty:11-15"  class="white">&nbsp;</td>
+	<td id="Gd:11-15"  class="white">&nbsp;</td>
+	<td id="Rm:11-15"  class="white">&nbsp;</td>
+	<td id="In:11-15"  class="white">&nbsp;</td>
+	<td id="Am:11-15"  class="white">&nbsp;</td>
+	<td id="Mn:11-15"  class="white">&nbsp;</td>
+	<td id="Un:11-15"  class="white">&nbsp;</td>
+	<td id="X:11-15"  class="green">&nbsp;</td>
+	<td id="Y:11-15"  class="green">&nbsp;</td>
+	<td id="Z:11-15"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:11-15"  class="green">&nbsp;</td>
+	<td id="3000:11-15"  class="green">&nbsp;</td>
+	<td id="5000:11-15"  class="green">&nbsp;</td>
+	<td id="B:11-15"  class="green">&nbsp;</td>
+</tr>
+<tr id="16-20">
+	<td id="Base:16-20">16-20</td>
+	<td id="0:16-20"  class="white">&nbsp;</td>
+	<td id="Fe:16-20"  class="white">&nbsp;</td>
+	<td id="Pr:16-20"  class="white">&nbsp;</td>
+	<td id="Ty:16-20"  class="white">&nbsp;</td>
+	<td id="Gd:16-20"  class="white">&nbsp;</td>
+	<td id="Rm:16-20"  class="white">&nbsp;</td>
+	<td id="In:16-20"  class="white">&nbsp;</td>
+	<td id="Am:16-20"  class="white">&nbsp;</td>
+	<td id="Mn:16-20"  class="white">&nbsp;</td>
+	<td id="Un:16-20"  class="green">&nbsp;</td>
+	<td id="X:16-20"  class="green">&nbsp;</td>
+	<td id="Y:16-20"  class="green">&nbsp;</td>
+	<td id="Z:16-20"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:16-20"  class="green">&nbsp;</td>
+	<td id="3000:16-20"  class="green">&nbsp;</td>
+	<td id="5000:16-20"  class="green">&nbsp;</td>
+	<td id="B:16-20"  class="green">&nbsp;</td>
+</tr>
+<tr id="21-25">
+	<td id="Base:21-25">21-25</td>
+	<td id="0:21-25"  class="white">&nbsp;</td>
+	<td id="Fe:21-25"  class="white">&nbsp;</td>
+	<td id="Pr:21-25"  class="white">&nbsp;</td>
+	<td id="Ty:21-25"  class="white">&nbsp;</td>
+	<td id="Gd:21-25"  class="white">&nbsp;</td>
+	<td id="Rm:21-25"  class="white">&nbsp;</td>
+	<td id="In:21-25"  class="white">&nbsp;</td>
+	<td id="Am:21-25"  class="white">&nbsp;</td>
+	<td id="Mn:21-25"  class="green">&nbsp;</td>
+	<td id="Un:21-25"  class="green">&nbsp;</td>
+	<td id="X:21-25"  class="green">&nbsp;</td>
+	<td id="Y:21-25"  class="green">&nbsp;</td>
+	<td id="Z:21-25"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:21-25"  class="green">&nbsp;</td>
+	<td id="3000:21-25"  class="green">&nbsp;</td>
+	<td id="5000:21-25"  class="green">&nbsp;</td>
+	<td id="B:21-25"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="26-30">
+	<td id="Base:26-30">26-30</td>
+	<td id="0:26-30"  class="white">&nbsp;</td>
+	<td id="Fe:26-30"  class="white">&nbsp;</td>
+	<td id="Pr:26-30"  class="white">&nbsp;</td>
+	<td id="Ty:26-30"  class="white">&nbsp;</td>
+	<td id="Gd:26-30"  class="white">&nbsp;</td>
+	<td id="Rm:26-30"  class="white">&nbsp;</td>
+	<td id="In:26-30"  class="white">&nbsp;</td>
+	<td id="Am:26-30"  class="green">&nbsp;</td>
+	<td id="Mn:26-30"  class="green">&nbsp;</td>
+	<td id="Un:26-30"  class="green">&nbsp;</td>
+	<td id="X:26-30"  class="green">&nbsp;</td>
+	<td id="Y:26-30"  class="green">&nbsp;</td>
+	<td id="Z:26-30"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:26-30"  class="green">&nbsp;</td>
+	<td id="3000:26-30"  class="green">&nbsp;</td>
+	<td id="5000:26-30"  class="yellow">&nbsp;</td>
+	<td id="B:26-30"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="31-35">
+	<td id="Base:31-35">31-35</td>
+	<td id="0:31-35"  class="white">&nbsp;</td>
+	<td id="Fe:31-35"  class="white">&nbsp;</td>
+	<td id="Pr:31-35"  class="white">&nbsp;</td>
+	<td id="Ty:31-35"  class="white">&nbsp;</td>
+	<td id="Gd:31-35"  class="white">&nbsp;</td>
+	<td id="Rm:31-35"  class="white">&nbsp;</td>
+	<td id="In:31-35"  class="green">&nbsp;</td>
+	<td id="Am:31-35"  class="green">&nbsp;</td>
+	<td id="Mn:31-35"  class="green">&nbsp;</td>
+	<td id="Un:31-35"  class="green">&nbsp;</td>
+	<td id="X:31-35"  class="green">&nbsp;</td>
+	<td id="Y:31-35"  class="green">&nbsp;</td>
+	<td id="Z:31-35"  class="green rightDivider">&nbsp;</td>
+	<td id="1000:31-35"  class="green">&nbsp;</td>
+	<td id="3000:31-35"  class="yellow">&nbsp;</td>
+	<td id="5000:31-35"  class="yellow">&nbsp;</td>
+	<td id="B:31-35"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="36-40">
+	<td id="Base:36-40">36-40</td>
+	<td id="0:36-40"  class="white">&nbsp;</td>
+	<td id="Fe:36-40"  class="white">&nbsp;</td>
+	<td id="Pr:36-40"  class="white">&nbsp;</td>
+	<td id="Ty:36-40"  class="white">&nbsp;</td>
+	<td id="Gd:36-40"  class="white">&nbsp;</td>
+	<td id="Rm:36-40"  class="green">&nbsp;</td>
+	<td id="In:36-40"  class="green">&nbsp;</td>
+	<td id="Am:36-40"  class="green">&nbsp;</td>
+	<td id="Mn:36-40"  class="green">&nbsp;</td>
+	<td id="Un:36-40"  class="green">&nbsp;</td>
+	<td id="X:36-40"  class="green">&nbsp;</td>
+	<td id="Y:36-40"  class="green">&nbsp;</td>
+	<td id="Z:36-40"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:36-40"  class="yellow">&nbsp;</td>
+	<td id="3000:36-40"  class="yellow">&nbsp;</td>
+	<td id="5000:36-40"  class="yellow">&nbsp;</td>
+	<td id="B:36-40"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="41-45">
+	<td id="Base:41-45">41-45</td>
+	<td id="0:41-45"  class="white">&nbsp;</td>
+	<td id="Fe:41-45"  class="white">&nbsp;</td>
+	<td id="Pr:41-45"  class="white">&nbsp;</td>
+	<td id="Ty:41-45"  class="white">&nbsp;</td>
+	<td id="Gd:41-45"  class="white">&nbsp;</td>
+	<td id="Rm:41-45"  class="green">&nbsp;</td>
+	<td id="In:41-45"  class="green">&nbsp;</td>
+	<td id="Am:41-45"  class="green">&nbsp;</td>
+	<td id="Mn:41-45"  class="green">&nbsp;</td>
+	<td id="Un:41-45"  class="green">&nbsp;</td>
+	<td id="X:41-45"  class="yellow">&nbsp;</td>
+	<td id="Y:41-45"  class="yellow">&nbsp;</td>
+	<td id="Z:41-45"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:41-45"  class="yellow">&nbsp;</td>
+	<td id="3000:41-45"  class="yellow">&nbsp;</td>
+	<td id="5000:41-45"  class="yellow">&nbsp;</td>
+	<td id="B:41-45"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="46-50">
+	<td id="Base:46-50">46-50</td>
+	<td id="0:46-50"  class="white">&nbsp;</td>
+	<td id="Fe:46-50"  class="white">&nbsp;</td>
+	<td id="Pr:46-50"  class="white">&nbsp;</td>
+	<td id="Ty:46-50"  class="white">&nbsp;</td>
+	<td id="Gd:46-50"  class="green">&nbsp;</td>
+	<td id="Rm:46-50"  class="green">&nbsp;</td>
+	<td id="In:46-50"  class="green">&nbsp;</td>
+	<td id="Am:46-50"  class="green">&nbsp;</td>
+	<td id="Mn:46-50"  class="green">&nbsp;</td>
+	<td id="Un:46-50"  class="yellow">&nbsp;</td>
+	<td id="X:46-50"  class="yellow">&nbsp;</td>
+	<td id="Y:46-50"  class="yellow">&nbsp;</td>
+	<td id="Z:46-50"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:46-50"  class="yellow">&nbsp;</td>
+	<td id="3000:46-50"  class="yellow">&nbsp;</td>
+	<td id="5000:46-50"  class="yellow">&nbsp;</td>
+	<td id="B:46-50"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="51-55">
+	<td id="Base:51-55">51-55</td>
+	<td id="0:51-55"  class="white">&nbsp;</td>
+	<td id="Fe:51-55"  class="white">&nbsp;</td>
+	<td id="Pr:51-55"  class="white">&nbsp;</td>
+	<td id="Ty:51-55"  class="green">&nbsp;</td>
+	<td id="Gd:51-55"  class="green">&nbsp;</td>
+	<td id="Rm:51-55"  class="green">&nbsp;</td>
+	<td id="In:51-55"  class="green">&nbsp;</td>
+	<td id="Am:51-55"  class="green">&nbsp;</td>
+	<td id="Mn:51-55"  class="yellow">&nbsp;</td>
+	<td id="Un:51-55"  class="yellow">&nbsp;</td>
+	<td id="X:51-55"  class="yellow">&nbsp;</td>
+	<td id="Y:51-55"  class="yellow">&nbsp;</td>
+	<td id="Z:51-55"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:51-55"  class="yellow">&nbsp;</td>
+	<td id="3000:51-55"  class="yellow">&nbsp;</td>
+	<td id="5000:51-55"  class="yellow">&nbsp;</td>
+	<td id="B:51-55"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="56-60">
+	<td id="Base:56-60">56-60</td>
+	<td id="0:56-60"  class="white">&nbsp;</td>
+	<td id="Fe:56-60"  class="white">&nbsp;</td>
+	<td id="Pr:56-60"  class="green">&nbsp;</td>
+	<td id="Ty:56-60"  class="green">&nbsp;</td>
+	<td id="Gd:56-60"  class="green">&nbsp;</td>
+	<td id="Rm:56-60"  class="green">&nbsp;</td>
+	<td id="In:56-60"  class="green">&nbsp;</td>
+	<td id="Am:56-60"  class="yellow">&nbsp;</td>
+	<td id="Mn:56-60"  class="yellow">&nbsp;</td>
+	<td id="Un:56-60"  class="yellow">&nbsp;</td>
+	<td id="X:56-60"  class="yellow">&nbsp;</td>
+	<td id="Y:56-60"  class="yellow">&nbsp;</td>
+	<td id="Z:56-60"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:56-60"  class="yellow">&nbsp;</td>
+	<td id="3000:56-60"  class="yellow">&nbsp;</td>
+	<td id="5000:56-60"  class="yellow">&nbsp;</td>
+	<td id="B:56-60"  class="yellow">&nbsp;</td>
+</tr>
+<tr id="61-65">
+	<td id="Base:61-65">61-65</td>
+	<td id="0:61-65"  class="white">&nbsp;</td>
+	<td id="Fe:61-65"  class="green">&nbsp;</td>
+	<td id="Pr:61-65"  class="green">&nbsp;</td>
+	<td id="Ty:61-65"  class="green">&nbsp;</td>
+	<td id="Gd:61-65"  class="green">&nbsp;</td>
+	<td id="Rm:61-65"  class="green">&nbsp;</td>
+	<td id="In:61-65"  class="yellow">&nbsp;</td>
+	<td id="Am:61-65"  class="yellow">&nbsp;</td>
+	<td id="Mn:61-65"  class="yellow">&nbsp;</td>
+	<td id="Un:61-65"  class="yellow">&nbsp;</td>
+	<td id="X:61-65"  class="yellow">&nbsp;</td>
+	<td id="Y:61-65"  class="yellow">&nbsp;</td>
+	<td id="Z:61-65"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:61-65"  class="yellow">&nbsp;</td>
+	<td id="3000:61-65"  class="yellow">&nbsp;</td>
+	<td id="5000:61-65"  class="yellow">&nbsp;</td>
+	<td id="B:61-65"  class="red">&nbsp;</td>
+</tr>
+<tr id="66-70">
+	<td id="Base:66-70">66-70</td>
+	<td id="0:66-70"  class="green">&nbsp;</td>
+	<td id="Fe:66-70"  class="green">&nbsp;</td>
+	<td id="Pr:66-70"  class="green">&nbsp;</td>
+	<td id="Ty:66-70"  class="green">&nbsp;</td>
+	<td id="Gd:66-70"  class="green">&nbsp;</td>
+	<td id="Rm:66-70"  class="yellow">&nbsp;</td>
+	<td id="In:66-70"  class="yellow">&nbsp;</td>
+	<td id="Am:66-70"  class="yellow">&nbsp;</td>
+	<td id="Mn:66-70"  class="yellow">&nbsp;</td>
+	<td id="Un:66-70"  class="yellow">&nbsp;</td>
+	<td id="X:66-70"  class="yellow">&nbsp;</td>
+	<td id="Y:66-70"  class="yellow">&nbsp;</td>
+	<td id="Z:66-70"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:66-70"  class="yellow">&nbsp;</td>
+	<td id="3000:66-70"  class="yellow">&nbsp;</td>
+	<td id="5000:66-70"  class="red">&nbsp;</td>
+	<td id="B:66-70"  class="red">&nbsp;</td>
+</tr>
+<tr id="71-75">
+	<td id="Base:71-75">71-75</td>
+	<td id="0:71-75"  class="green">&nbsp;</td>
+	<td id="Fe:71-75"  class="green">&nbsp;</td>
+	<td id="Pr:71-75"  class="green">&nbsp;</td>
+	<td id="Ty:71-75"  class="green">&nbsp;</td>
+	<td id="Gd:71-75"  class="green">&nbsp;</td>
+	<td id="Rm:71-75"  class="yellow">&nbsp;</td>
+	<td id="In:71-75"  class="yellow">&nbsp;</td>
+	<td id="Am:71-75"  class="yellow">&nbsp;</td>
+	<td id="Mn:71-75"  class="yellow">&nbsp;</td>
+	<td id="Un:71-75"  class="yellow">&nbsp;</td>
+	<td id="X:71-75"  class="yellow">&nbsp;</td>
+	<td id="Y:71-75"  class="yellow">&nbsp;</td>
+	<td id="Z:71-75"  class="yellow rightDivider">&nbsp;</td>
+	<td id="1000:71-75"  class="yellow">&nbsp;</td>
+	<td id="3000:71-75"  class="red">&nbsp;</td>
+	<td id="5000:71-75"  class="red">&nbsp;</td>
+	<td id="B:71-75"  class="red">&nbsp;</td>
+</tr>
+<tr id="76-80">
+	<td id="Base:76-80">76-80</td>
+	<td id="0:76-80"  class="green">&nbsp;</td>
+	<td id="Fe:76-80"  class="green">&nbsp;</td>
+	<td id="Pr:76-80"  class="green">&nbsp;</td>
+	<td id="Ty:76-80"  class="green">&nbsp;</td>
+	<td id="Gd:76-80"  class="yellow">&nbsp;</td>
+	<td id="Rm:76-80"  class="yellow">&nbsp;</td>
+	<td id="In:76-80"  class="yellow">&nbsp;</td>
+	<td id="Am:76-80"  class="yellow">&nbsp;</td>
+	<td id="Mn:76-80"  class="yellow">&nbsp;</td>
+	<td id="Un:76-80"  class="yellow">&nbsp;</td>
+	<td id="X:76-80"  class="yellow">&nbsp;</td>
+	<td id="Y:76-80"  class="yellow">&nbsp;</td>
+	<td id="Z:76-80"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:76-80"  class="red">&nbsp;</td>
+	<td id="3000:76-80"  class="red">&nbsp;</td>
+	<td id="5000:76-80"  class="red">&nbsp;</td>
+	<td id="B:76-80"  class="red">&nbsp;</td>
+</tr>
+<tr id="81-85">
+	<td id="Base:81-85">81-85</td>
+	<td id="0:81-85"  class="green">&nbsp;</td>
+	<td id="Fe:81-85"  class="green">&nbsp;</td>
+	<td id="Pr:81-85"  class="green">&nbsp;</td>
+	<td id="Ty:81-85"  class="yellow">&nbsp;</td>
+	<td id="Gd:81-85"  class="yellow">&nbsp;</td>
+	<td id="Rm:81-85"  class="yellow">&nbsp;</td>
+	<td id="In:81-85"  class="yellow">&nbsp;</td>
+	<td id="Am:81-85"  class="yellow">&nbsp;</td>
+	<td id="Mn:81-85"  class="yellow">&nbsp;</td>
+	<td id="Un:81-85"  class="yellow">&nbsp;</td>
+	<td id="X:81-85"  class="red">&nbsp;</td>
+	<td id="Y:81-85"  class="red">&nbsp;</td>
+	<td id="Z:81-85"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:81-85"  class="red">&nbsp;</td>
+	<td id="3000:81-85"  class="red">&nbsp;</td>
+	<td id="5000:81-85"  class="red">&nbsp;</td>
+	<td id="B:81-85"  class="red">&nbsp;</td>
+</tr>
+<tr id="86-90">
+	<td id="Base:86-90">86-90</td>
+	<td id="0:86-90"  class="green">&nbsp;</td>
+	<td id="Fe:86-90"  class="green">&nbsp;</td>
+	<td id="Pr:86-90"  class="yellow">&nbsp;</td>
+	<td id="Ty:86-90"  class="yellow">&nbsp;</td>
+	<td id="Gd:86-90"  class="yellow">&nbsp;</td>
+	<td id="Rm:86-90"  class="yellow">&nbsp;</td>
+	<td id="In:86-90"  class="yellow">&nbsp;</td>
+	<td id="Am:86-90"  class="yellow">&nbsp;</td>
+	<td id="Mn:86-90"  class="red">&nbsp;</td>
+	<td id="Un:86-90"  class="red">&nbsp;</td>
+	<td id="X:86-90"  class="red">&nbsp;</td>
+	<td id="Y:86-90"  class="red">&nbsp;</td>
+	<td id="Z:86-90"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:86-90"  class="red">&nbsp;</td>
+	<td id="3000:86-90"  class="red">&nbsp;</td>
+	<td id="5000:86-90"  class="red">&nbsp;</td>
+	<td id="B:86-90"  class="red">&nbsp;</td>
+</tr>
+<tr id="91-94">
+	<td id="Base:91-94">91-94</td>
+	<td id="0:91-94"  class="green">&nbsp;</td>
+	<td id="Fe:91-94"  class="yellow">&nbsp;</td>
+	<td id="Pr:91-94"  class="yellow">&nbsp;</td>
+	<td id="Ty:91-94"  class="yellow">&nbsp;</td>
+	<td id="Gd:91-94"  class="yellow">&nbsp;</td>
+	<td id="Rm:91-94"  class="yellow">&nbsp;</td>
+	<td id="In:91-94"  class="red">&nbsp;</td>
+	<td id="Am:91-94"  class="red">&nbsp;</td>
+	<td id="Mn:91-94"  class="red">&nbsp;</td>
+	<td id="Un:91-94"  class="red">&nbsp;</td>
+	<td id="X:91-94"  class="red">&nbsp;</td>
+	<td id="Y:91-94"  class="red">&nbsp;</td>
+	<td id="Z:91-94"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:91-94"  class="red">&nbsp;</td>
+	<td id="3000:91-94"  class="red">&nbsp;</td>
+	<td id="5000:91-94"  class="red">&nbsp;</td>
+	<td id="B:91-94"  class="red">&nbsp;</td>
+</tr>
+<tr id="95-97">
+	<td id="Base:95-97">95-97</td>
+	<td id="0:95-97"  class="yellow">&nbsp;</td>
+	<td id="Fe:95-97"  class="yellow">&nbsp;</td>
+	<td id="Pr:95-97"  class="yellow">&nbsp;</td>
+	<td id="Ty:95-97"  class="yellow">&nbsp;</td>
+	<td id="Gd:95-97"  class="yellow">&nbsp;</td>
+	<td id="Rm:95-97"  class="red">&nbsp;</td>
+	<td id="In:95-97"  class="red">&nbsp;</td>
+	<td id="Am:95-97"  class="red">&nbsp;</td>
+	<td id="Mn:95-97"  class="red">&nbsp;</td>
+	<td id="Un:95-97"  class="red">&nbsp;</td>
+	<td id="X:95-97"  class="red">&nbsp;</td>
+	<td id="Y:95-97"  class="red">&nbsp;</td>
+	<td id="Z:95-97"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:95-97"  class="red">&nbsp;</td>
+	<td id="3000:95-97"  class="red">&nbsp;</td>
+	<td id="5000:95-97"  class="red">&nbsp;</td>
+	<td id="B:95-97"  class="red">&nbsp;</td>
+</tr>
+<tr id="98-99">
+	<td id="Base:98-99">98-99</td>
+	<td id="0:98-99"  class="yellow">&nbsp;</td>
+	<td id="Fe:98-99"  class="yellow">&nbsp;</td>
+	<td id="Pr:98-99"  class="red">&nbsp;</td>
+	<td id="Ty:98-99"  class="red">&nbsp;</td>
+	<td id="Gd:98-99"  class="red">&nbsp;</td>
+	<td id="Rm:98-99"  class="red">&nbsp;</td>
+	<td id="In:98-99"  class="red">&nbsp;</td>
+	<td id="Am:98-99"  class="red">&nbsp;</td>
+	<td id="Mn:98-99"  class="red">&nbsp;</td>
+	<td id="Un:98-99"  class="red">&nbsp;</td>
+	<td id="X:98-99"  class="red">&nbsp;</td>
+	<td id="Y:98-99"  class="red">&nbsp;</td>
+	<td id="Z:98-99"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:98-99"  class="red">&nbsp;</td>
+	<td id="3000:98-99"  class="red">&nbsp;</td>
+	<td id="5000:98-99"  class="red">&nbsp;</td>
+	<td id="B:98-99"  class="red">&nbsp;</td>
+</tr>
+<tr id="100-100">
+	<td id="Base:100-100">100</td>
+	<td id="0:100-100"  class="red">&nbsp;</td>
+	<td id="Fe:100-100"  class="red">&nbsp;</td>
+	<td id="Pr:100-100"  class="red">&nbsp;</td>
+	<td id="Ty:100-100"  class="red">&nbsp;</td>
+	<td id="Gd:100-100"  class="red">&nbsp;</td>
+	<td id="Rm:100-100"  class="red">&nbsp;</td>
+	<td id="In:100-100"  class="red">&nbsp;</td>
+	<td id="Am:100-100"  class="red">&nbsp;</td>
+	<td id="Mn:100-100"  class="red">&nbsp;</td>
+	<td id="Un:100-100"  class="red">&nbsp;</td>
+	<td id="X:100-100"  class="red">&nbsp;</td>
+	<td id="Y:100-100"  class="red">&nbsp;</td>
+	<td id="Z:100-100"  class="red rightDivider">&nbsp;</td>
+	<td id="1000:100-100"  class="red">&nbsp;</td>
+	<td id="3000:100-100"  class="red">&nbsp;</td>
+	<td id="5000:100-100"  class="red">&nbsp;</td>
+	<td id="B:100-100"  class="red">&nbsp;</td>
+</tr>
+
+	
+	</table>
+</body>
+</html>
